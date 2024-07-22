@@ -5,16 +5,20 @@ import {useEffect, useState} from "react";
 import axios from "./services/axios.js";
 
 function App() {
-    const [popularData, setPopularData] = useState([])
+    const [popular, setPopular] = useState([])
+    const [popularData, setPopularData] = useState({
+        data: [],
+        genres: []
+    })
     const [genres, setGenres] = useState([])
     useEffect(() => {
 
         (async () => {
             try {
                 const data = await axios.get("/movie/popular")
-                setPopularData(data.data.results.slice(0, 3))
+                setPopular(data.data.results.slice(0, 3))
             } catch (e) {
-                setPopularData([])
+                setPopular([])
             }
         })();
 
@@ -30,12 +34,11 @@ function App() {
 
     useEffect(() => {
         const data = {
-            data: popularData,
+            data: popular,
             genres: genres,
         }
-        console.log(data)
-        // setPopularData(data)
-    }, [popularData, genres]);
+        setPopularData(data)
+    }, [popular, genres]);
     return (
         <>
             <Navbar>
@@ -60,7 +63,7 @@ function App() {
                     <ListFilm title={'Recommendations'} data={popularData} count={3}/>
                 </section>
                 <section>
-                    <ListFilm title={'Browse'} data={popularData} count={5}/>
+                    <ListFilm title={'Browse'} data={[]} count={5}/>
                 </section>
             </main>
         </>
