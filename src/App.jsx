@@ -1,47 +1,66 @@
 import {IoSearch} from "react-icons/io5";
-import {DropdownMenu, Menu, MenuItem, Navbar, NavTitle} from "./components/Navbar";
+import {Dropdown, Navbar} from "./components/Navbar";
+import ListFilm from "./components/ListFilm.jsx";
+import {useEffect, useState} from "react";
+import axios from "./services/axios.js";
 
 function App() {
+    const [popularData, setPopularData] = useState([])
+    const [genres, setGenres] = useState([])
+    useEffect(() => {
+
+        (async () => {
+            try {
+                const data = await axios.get("/movie/popular")
+                setPopularData(data.data.results.slice(0, 3))
+            } catch (e) {
+                setPopularData([])
+            }
+        })();
+
+        (async () => {
+            try {
+                const data = await axios.get("/genre/movie/list")
+                setGenres(data.data.genres)
+            } catch (e) {
+                setGenres([])
+            }
+        })();
+    }, []);
+
+    useEffect(() => {
+        const data = {
+            data: popularData,
+            genres: genres,
+        }
+        console.log(data)
+        // setPopularData(data)
+    }, [popularData, genres]);
     return (
         <>
             <Navbar>
-                <NavTitle>ReactFilm</NavTitle>
-                <Menu>
-                    <MenuItem>Home</MenuItem>
-                    <DropdownMenu title={"Category"}>
-                        <DropdownMenu.Item>Horror</DropdownMenu.Item>
-                        <DropdownMenu.Item>Comedy</DropdownMenu.Item>
-                        <DropdownMenu.Item>Action</DropdownMenu.Item>
-                        <DropdownMenu.Item>Action</DropdownMenu.Item>
-                        <DropdownMenu.Item>Action</DropdownMenu.Item>
-                        <DropdownMenu.Item>Action</DropdownMenu.Item>
-                    </DropdownMenu>
+                <Navbar.Title>ReactFilm</Navbar.Title>
+                <Navbar.Menu>
+                    <Navbar.MenuItem>Home</Navbar.MenuItem>
+                    <Dropdown title={"Category"}>
+                        <Dropdown.Item>Action</Dropdown.Item>
+                        <Dropdown.Item>Horror</Dropdown.Item>
+                        <Dropdown.Item>Comedy</Dropdown.Item>
+                    </Dropdown>
                     <div className={"relative w-1/3"}>
                         <input type={"text"}
-                               className={"border-2 border-gray-200 rounded-full h-12 w-full px-5 text-base"}
+                               className={"border-2 border-gray-200 rounded-full h-12 w-full px-5 text-base focus-visible:!outline-black"}
                                placeholder={"Search movie, genre"}/>
                         <IoSearch className={"absolute right-4 top-3 text-2xl text-gray-200"}/>
                     </div>
-                </Menu>
+                </Navbar.Menu>
             </Navbar>
-            <main className={"container mx-auto flex flex-col gap-10"}>
+            <main className={"container mx-auto flex flex-col gap-10 relative z-0"}>
                 <section>
-                    <h1 className={"font-bold text-xl"}>Featured Movie</h1>
-                    <div className={"grid grid-cols-3 gap-8 mt-6"}>
-                        <div className={"h-72 bg-black rounded-3xl"}></div>
-                        <div className={"h-72 bg-black rounded-3xl"}></div>
-                        <div className={"h-72 bg-black rounded-3xl"}></div>
-                    </div>
+                    <ListFilm title={'Recommendations'} data={popularData} count={3}/>
                 </section>
                 <section>
-                    <h1 className={"font-bold text-xl"}>Browse</h1>
-                    <div className={"grid grid-cols-5 gap-10 mt-6"}>
-                        <div className={"h-80 bg-black rounded-3xl"}></div>
-                        <div className={"h-80 bg-black rounded-3xl"}></div>
-                        <div className={"h-80 bg-black rounded-3xl"}></div>
-                        <div className={"h-80 bg-black rounded-3xl"}></div>
-                        <div className={"h-80 bg-black rounded-3xl"}></div>
-                    </div>
+                    <ListFilm title={'Browse'} data={popularData} count={5}/>
                 </section>
             </main>
         </>
