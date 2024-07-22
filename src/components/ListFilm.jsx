@@ -1,6 +1,6 @@
 import {FaPlay, FaStar} from "react-icons/fa6";
 
-export default function ListFilm({title, data, count, genres}) {
+export default function ListFilm({title, data, count}) {
     const togglePosition = (count > 3) ? 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-12' : 'bottom-4 right-4 size-16'
     return (
         <>
@@ -27,7 +27,7 @@ export default function ListFilm({title, data, count, genres}) {
                             <div className={'absolute top-5 left-5 text-white text-sm'}>
                                 <div className={'flex gap-1 items-center justify-center'}>
                                     <FaStar/>
-                                    <span>4.3/5</span>
+                                    <span>{item.vote_average.toFixed(1)}/10</span>
                                 </div>
                             </div>
                         </div>

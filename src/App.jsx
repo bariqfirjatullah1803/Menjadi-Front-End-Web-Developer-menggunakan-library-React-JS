@@ -29,7 +29,7 @@ function App() {
         (async () => {
             try {
                 const data = await axios.get("/movie/top_rated")
-                setTopRated(data.data.results.slice(0, 3))
+                setTopRated(data.data.results.slice(0, 5))
             } catch (e) {
                 setTopRated([])
             }
@@ -46,19 +46,17 @@ function App() {
     }, []);
 
     useEffect(() => {
-        const data = {
+        setPopularData({
             data: popular,
             genres: genres,
-        }
-        setPopularData(data)
+        })
     }, [popular, genres]);
 
     useEffect(() => {
-        const data = {
-            data: popular,
+        setTopRatedData({
+            data: topRated,
             genres: genres,
-        }
-        setTopRatedData(data)
+        })
     }, [topRated, genres]);
     return (
         <>
@@ -84,7 +82,7 @@ function App() {
                     <ListFilm title={'Recommendations'} data={popularData} count={3}/>
                 </section>
                 <section>
-                    <ListFilm title={'Browse'} data={[]} count={5}/>
+                    <ListFilm title={'Browse'} data={topRatedData} count={5}/>
                 </section>
             </main>
         </>
