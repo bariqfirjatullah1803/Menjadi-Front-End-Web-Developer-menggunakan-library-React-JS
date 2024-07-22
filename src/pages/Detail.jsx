@@ -1,23 +1,32 @@
-import {Link} from "react-router-dom";
-import ReactPlayer from "react-player";
-import {FaArrowLeft} from "react-icons/fa";
+import "@vidstack/react/player/styles/default/theme.css";
+import "@vidstack/react/player/styles/default/layouts/audio.css";
+import "@vidstack/react/player/styles/default/layouts/video.css";
 
-function Detail() {
-    return (
-        <>
-            <section className={'relative h-screen flex flex-col gap-6'}>
-                <div className={'absolute top-0 bg-black'}>
+import { MediaPlayer, MediaProvider, Poster, Track } from "@vidstack/react";
+import { DefaultVideoLayout, defaultLayoutIcons } from "@vidstack/react/player/layouts/default";
 
-                </div>
-                {/*<Link to={'/'} className={'flex items-center gap-3'}>*/}
-                {/*    <FaArrowLeft/>*/}
-                {/*    <span>Back</span>*/}
-                {/*</Link>*/}
-                <ReactPlayer url={'https://www.youtube.com/watch?v=SqcY0GlETPk&t=163s'} controls width={'100%'}
-                             height={'100%'}/>
-            </section>
-        </>
-    );
+export default function Detail() {
+  return (
+    <div className="relative flex min-h-[100svh] justify-center items-end bg-black">
+        <div className="absolute text-white top-0 left-0 ">Makan</div>
+      <MediaPlayer
+        src="youtube/SqcY0GlETPk"
+        viewType="video"
+        streamType="on-demand"
+        logLevel="warn"
+        crossOrigin
+        playsInline
+        title="Sprite Fight"
+        poster="https://files.vidstack.io/sprite-fight/poster.webp"
+        aspectRatio="22/10"
+        
+      >
+        <MediaProvider />
+        <DefaultVideoLayout
+          thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt"
+          icons={defaultLayoutIcons}
+        />
+      </MediaPlayer>
+    </div>
+  );
 }
-
-export default Detail;
