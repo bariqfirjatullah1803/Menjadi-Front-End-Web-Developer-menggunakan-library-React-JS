@@ -6,7 +6,12 @@ import axios from "./services/axios.js";
 
 function App() {
     const [popular, setPopular] = useState([])
+    const [topRated, setTopRated] = useState([])
     const [popularData, setPopularData] = useState({
+        data: [],
+        genres: []
+    })
+    const [topRatedData, setTopRatedData] = useState({
         data: [],
         genres: []
     })
@@ -19,6 +24,14 @@ function App() {
                 setPopular(data.data.results.slice(0, 3))
             } catch (e) {
                 setPopular([])
+            }
+        })();
+        (async () => {
+            try {
+                const data = await axios.get("/movie/top_rated")
+                setTopRated(data.data.results.slice(0, 3))
+            } catch (e) {
+                setTopRated([])
             }
         })();
 
@@ -39,6 +52,14 @@ function App() {
         }
         setPopularData(data)
     }, [popular, genres]);
+
+    useEffect(() => {
+        const data = {
+            data: popular,
+            genres: genres,
+        }
+        setTopRatedData(data)
+    }, [topRated, genres]);
     return (
         <>
             <Navbar>

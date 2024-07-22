@@ -10,7 +10,7 @@ export default function ListFilm({title, data, count, genres}) {
                     const backgroundImage = `url('https://image.tmdb.org/t/p/original${item.backdrop_path}')`;
 
                     const genres = item.genre_ids.map((item) => {
-                        return data.genres.filter((genre) => genre.id === item)[0].name
+                        return data.genres.filter((genre) => genre.id === item)[0]?.name
                     }).slice(0, 2)
 
                     return (
